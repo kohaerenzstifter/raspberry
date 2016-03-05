@@ -1,0 +1,8 @@
+#!/bin/sh
+
+set -e
+
+echo "Installing khttpd service ..."
+update-rc.d khttpd defaults
+echo "Starting khttpd service ..."
+service khttpd start

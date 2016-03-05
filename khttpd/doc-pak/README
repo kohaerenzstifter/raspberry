@@ -1,0 +1,50 @@
+This is a simple but extensible http(s) server (/usr/bin/httpd) and plugin (/usr/lib/httpd/libhttpdWwwidget.so) which you can run on your Raspberry Pi to serve my Android App (https://play.google.com/store/apps/details?id=org.kohaerenzstiftung.wwwidget) in order to have screenshots of arbitrary websites display as a widget on your Android home screen.
+To run the server, first create a configuration file httpd.conf with the following content:
+
+--------------------------------------------------------------------------------
+
+# This is the "main" config section
+[main]
+# minimum number of preforked server processes
+minHandlers=1
+# maximum number of preforked server processes
+maxHandlers=5
+# listen port
+port=8080
+# plugin directory
+pluginDirectory=/usr/lib/httpd/
+# secure=no means HTTP, secure=yes means HTTPS
+secure=yes
+# path to server certificate
+serverCertPath=/etc/ssl/certs/kohaerenzstiftung.selfhost.me.crt
+# path to server key
+serverKeyPath=/etc/ssl/private/kohaerenzstiftung.selfhost.me.key
+# path to trust certificate
+caCertPath=/etc/ssl/certs/ca.kohaerenzstiftung.selfhost.me.crt
+
+# This is the config section for wwwidget plugin
+[wwwidget]
+# authentication password
+password=geheim
+
+--------------------------------------------------------------------------------
+
+You can then start the server as follows:
+
+httpd -d -l /var/log/khttpd/ -c httpd.conf
+
+Short explanation of the command line parameters:
+
+-d: Run as a daemon in the background
+-l: <directory>: path to directory where log files will be written (httpd.out and httpd.err)
+-c <file>: path to config file
+
+Then, in my Android app, enter the following for server in the preferences activity:
+
+<server>:<port>
+
+Also enter your chosen password and (un)select httpS.
+
+Now you're all set.
+
+Martin Knappe (martin.knappe@posteo.de)
